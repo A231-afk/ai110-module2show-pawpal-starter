@@ -52,13 +52,10 @@ Paste a sample of your app's CLI or Streamlit output here so a reader can see wh
 08:00  Feed breakfast (high)
 17:00  Evening walk (medium)
 '''
-## 🧪 Testing PawPal+
-
-
 ```md
 ## 🧪 Testing PawPal+
 
-Run the tests with:
+Run the full automated test suite with:
 
 ```bash
 python3 -m pytest

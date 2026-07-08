@@ -47,8 +47,7 @@ I tested that `mark_complete()` changes a task from incomplete to complete. I al
 
 **b. Confidence**
 
-I am fairly confident that the basic scheduler works because the demo script runs successfully and the pytest tests pass. If I had more time, I would test more edge cases, such as multiple pets with tasks at the same time, pets with no tasks, and filtering completed tasks from the final schedule.
-
+I have a high level of confidence in the core system because all five automated tests pass. The tests cover basic task management as well as the main scheduling algorithms, including sorting, recurrence, and conflict detection.
 ---
 
 ## 5. Reflection
