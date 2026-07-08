@@ -46,27 +46,30 @@ pip install -r requirements.txt
 
 Paste a sample of your app's CLI or Streamlit output here so a reader can see what a generated plan looks like: 
 
-''' Today's Schedule
+'''Today's Schedule
 ----------------
 07:00  Morning walk (high)
 08:00  Feed breakfast (high)
 17:00  Evening walk (medium)
 '''
-
 ## 🧪 Testing PawPal+
 
-```bash
-# Run the full test suite:
-pytest
 
-# Run with coverage:
-pytest --cov
-```
+```md
+## 🧪 Testing PawPal+
+
+Run the tests with:
+
+```bash
+python3 -m pytest
 
 Sample test output:
 
 ```
-# Paste your pytest output here
+tests/test_pawpal.py::test_task_mark_complete PASSED
+tests/test_pawpal.py::test_pet_add_task_increases_count PASSED
+
+2 passed in 0.02s
 ```
 
 ## 📐 Smarter Scheduling

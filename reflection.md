@@ -21,14 +21,9 @@ At this stage, I have not made any major changes to my initial design. After rev
 ## 2. Scheduling Logic and Tradeoffs
 
 **a. Constraints and priorities**
-
-- What constraints does your scheduler consider (for example: time, priority, preferences)?
-- How did you decide which constraints mattered most?
-
+My scheduler considers task time, priority, and completion status. The main constraint is time because the daily plan should appear in chronological order. Priority is stored so the user can see which tasks matter most, and completion status is used to filter out tasks that are already done.
 **b. Tradeoffs**
-
-- Describe one tradeoff your scheduler makes.
-- Why is that tradeoff reasonable for this scenario?
+One tradeoff my scheduler makes is keeping the scheduling logic simple by sorting tasks with 24-hour time strings instead of using a more advanced date/time system. This is reasonable because the app is focused on a daily pet care plan, and times like `07:00`, `08:00`, and `17:00` sort correctly and are easy to understand.
 
 ---
 
@@ -45,18 +40,15 @@ At this stage, I have not made any major changes to my initial design. After rev
 - How did you evaluate or verify what the AI suggested?
 
 ---
-
 ## 4. Testing and Verification
 
 **a. What you tested**
 
-- What behaviors did you test?
-- Why were these tests important?
+I tested that `mark_complete()` changes a task from incomplete to complete. I also tested that adding a task to a pet increases the pet’s task list by one. These tests are important because completion tracking and task storage are core behaviors used by the scheduler and UI.
 
 **b. Confidence**
 
-- How confident are you that your scheduler works correctly?
-- What edge cases would you test next if you had more time?
+I am fairly confident that the basic scheduler works because the demo script runs successfully and the pytest tests pass. If I had more time, I would test more edge cases, such as multiple pets with tasks at the same time, pets with no tasks, and filtering completed tasks from the final schedule.
 
 ---
 
