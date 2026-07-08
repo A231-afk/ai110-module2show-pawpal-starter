@@ -56,27 +56,37 @@ if st.button("Add pet"):
     st.success(f"Added {pet_name}!")
 
 if st.session_state.owner.pets:
-    selected_pet = st.selectbox("Choose pet", st.session_state.owner.pets, format_func=lambda pet: pet.name)
+    # Show pet names (strings) in the selectbox, not Pet objects.
+    pet_names = [pet.name for pet in st.session_state.owner.pets]
+    selected_name = st.selectbox("Choose pet", pet_names)
+
+    # Look up the real Pet object in session state by name, so we mutate the
+    # pet that is actually stored (not a detached copy).
+    selected_pet = None
+    for pet in st.session_state.owner.pets:
+        if pet.name == selected_name:
+            selected_pet = pet
+            break
 
     task_title = st.text_input("Task title", value="Morning walk")
+    due_date = st.text_input("Due date", value="2026-07-08")
     time_of_day = st.text_input("Time", value="07:00")
     priority = st.selectbox("Priority", ["low", "medium", "high"], index=2)
 
     if st.button("Add task"):
-        selected_pet.add_task(Task(task_title, time_of_day, priority, due_date="2026-07-08"))
+        selected_pet.add_task(Task(task_title, time_of_day, priority, due_date))
         st.success(f"Added task to {selected_pet.name}")
 
     st.write("Current tasks:")
     for pet in st.session_state.owner.pets:
         for task in pet.tasks:
-            st.write(f"{pet.name}: {task.time_of_day} — {task.description} ({task.priority})")
+            st.write(f"{pet.name}: {task.due_date} {task.time_of_day} — {task.description} ({task.priority})")
 else:
     st.info("Add a pet before adding tasks.")
 
 st.divider()
 
 st.subheader("Build Schedule")
-st.caption("This button should call your scheduling logic once you implement it.")
 
 if st.button("Generate schedule"):
     scheduler = Scheduler(st.session_state.owner)
@@ -84,7 +94,21 @@ if st.button("Generate schedule"):
 
     if schedule:
         st.write("Today's Schedule:")
-        for task in schedule:
-            st.write(f"{task.time_of_day} — {task.description} ({task.priority})")
+        st.table([
+            {
+                "Date": task.due_date,
+                "Time": task.time_of_day,
+                "Task": task.description,
+                "Priority": task.priority,
+            }
+            for task in schedule
+        ])
+
+        conflicts = scheduler.detect_conflicts()
+        if conflicts:
+            for conflict in conflicts:
+                st.warning(conflict)
+        else:
+            st.success("No scheduling conflicts detected.")
     else:
         st.info("No tasks to schedule yet.")

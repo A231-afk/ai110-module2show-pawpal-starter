@@ -30,13 +30,13 @@ One tradeoff my scheduler makes is that conflict detection only checks for exact
 
 **a. How you used AI**
 
-- How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)?
-- What kinds of prompts or questions were most helpful?
+I used AI throughout the whole project, but I tried to stay in charge of the decisions instead of just copying whatever it gave me. I started by having it help me turn my ideas into a Mermaid UML class diagram, which made it easy to see my four classes and their relationships before I wrote any code. Once I was happy with the diagram, I asked AI to turn the UML into Python class skeletons with just the attributes and method stubs, no logic yet. That kept the structure clean and matched my diagram.
+
+After the skeletons were in place, I used AI to help me implement the method bodies one step at a time, like `mark_complete()`, the `add_pet`/`add_task` methods, and the harder Scheduler methods for recurring tasks and conflict detection. The most helpful prompts were specific ones where I described exactly what a method should do and what it should return, instead of asking for the whole project at once. AI was also really useful for debugging. For example, when my Streamlit tasks were not saving, it helped me figure out that the selectbox was returning a copy of the Pet object instead of the real one in session state. Finally, I used AI to write the pytest tests for my main behaviors so I could confirm everything worked.
 
 **b. Judgment and verification**
 
-- Describe one moment where you did not accept an AI suggestion as-is.
-- How did you evaluate or verify what the AI suggested?
+One moment where I did not accept an AI suggestion as-is was around how to store the time of day for tasks. At first the idea was to use words like "morning" and "evening," but I realized that sorting those alphabetically would put "evening" before "morning," which is wrong. I changed the design to use 24-hour time strings like "07:00" and "17:00" instead, because those sort correctly as plain text and are clearer for the user. I verified my changes by running `main.py` and checking that the schedule actually came out in the right order, and by running `python3 -m pytest` to make sure all five tests still passed. I also tested the Streamlit app in the browser to confirm the fixes worked in the real UI, not just in theory.
 
 ---
 ## 4. Testing and Verification
@@ -54,12 +54,12 @@ I have a high level of confidence in the core system because all five automated 
 
 **a. What went well**
 
-- What part of this project are you most satisfied with?
+The part I am most satisfied with is the Scheduler class and how its smart features came together. Sorting, filtering by pet, recurring tasks, and conflict detection all work, and I have tests that prove it. I also liked how using separate chats for different parts of the project helped me stay organized. I kept one chat focused on the system design and UML, another for building and implementing the algorithms, and another for writing the tests. That way each conversation stayed on topic and I did not get confused by mixing design questions with debugging or testing questions. It felt like having separate notebooks for different parts of the same project.
 
 **b. What you would improve**
 
-- If you had another iteration, what would you improve or redesign?
+If I had another iteration, I would improve conflict detection so it could handle task durations and partial overlaps, not just exact matches on date and time. I would also add a real date picker and frequency dropdown in the Streamlit UI instead of typing the due date by hand, so recurring tasks could be created directly from the app.
 
 **c. Key takeaway**
 
-- What is one important thing you learned about designing systems or working with AI on this project?
+The biggest thing I learned is what it means to be the lead architect while using AI. AI was great at generating code quickly, but it did not know my project goals or catch design problems like the morning/evening sorting issue. I had to make the real decisions, like how to structure my classes, what each method should return, and when a suggestion did not actually fit. I also had to verify everything by running the app and the tests instead of trusting the code just because it looked correct. AI worked best as a fast assistant, but I was the one responsible for the design and for making sure the final system actually worked.

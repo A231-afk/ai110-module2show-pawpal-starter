@@ -42,52 +42,77 @@ pip install -r requirements.txt
 6. Connect your logic to the Streamlit UI in `app.py`.
 7. Refine UML so it matches what you actually built.
 
+## ✨ Features
+
+PawPal+ has four "smart scheduling" features, all handled by the `Scheduler` class:
+
+| Feature | Method | What it does |
+|---------|--------|--------------|
+| **Sort by time** | `Scheduler.sort_tasks_by_time()` | Gathers every task across all pets and returns them in chronological order using 24-hour `HH:MM` time strings. |
+| **Filter by pet** | `Scheduler.filter_tasks_by_pet(pet_name)` | Finds a pet by name and returns only that pet's tasks (empty list if the pet has none or doesn't exist). |
+| **Recurring tasks** | `Scheduler.complete_task(task)` | Marks a task complete and, if it repeats `daily` or `weekly`, automatically creates the next task with an updated due date. |
+| **Conflict detection** | `Scheduler.detect_conflicts()` | Returns warning messages whenever two tasks share the same due date and time of day. |
+
+There is also `Scheduler.get_incomplete_tasks()` for listing tasks that still need to be done.
+
+## 📸 Demo Walkthrough
+
+You can follow along using the Streamlit app (`streamlit run app.py`):
+
+1. **Add a pet** — Enter a pet name and species, then click **Add pet**. The pet is stored on the owner in session state.
+2. **Add a task** — Choose the pet from the dropdown, then enter a task title, due date, time (in 24-hour `HH:MM` format), and priority. Click **Add task** and it appears under **Current tasks**.
+3. **Generate the sorted schedule** — Click **Generate schedule**. The app calls `Scheduler.sort_tasks_by_time()` and shows all tasks in a clean table, ordered from earliest to latest.
+4. **See conflict warnings** — The app also runs `Scheduler.detect_conflicts()`. If two tasks land on the same date and time, it shows a yellow `st.warning()` for each conflict. If everything is clear, it shows a green "No scheduling conflicts detected." message.
+
 ## 🖥️ Sample Output
 
-Paste a sample of your app's CLI or Streamlit output here so a reader can see what a generated plan looks like: 
+Running the command-line demo shows all four features:
 
-'''Today's Schedule
-----------------
+```bash
+python3 main.py
+```
+
+```
+Today's Schedule (sorted by time)
+---------------------------------
 07:00  Morning walk (high)
 08:00  Feed breakfast (high)
+12:00  Give medicine (high)
+12:00  Brush fur (low)
 17:00  Evening walk (medium)
-'''
-```md
-## 🧪 Testing PawPal+
+
+Tasks for Rex
+-------------
+17:00  Evening walk
+07:00  Morning walk
+12:00  Give medicine
+
+Completing the daily recurring task
+-----------------------------------
+Completed: Morning walk on 2026-07-08
+Next one:  Morning walk on 2026-07-09 (completed=False)
+
+Conflict Check
+--------------
+Conflict: 'Give medicine' and 'Brush fur' are both scheduled on 2026-07-08 at 12:00.
+```
+
+## 🧪 Testing
 
 Run the full automated test suite with:
 
 ```bash
 python3 -m pytest
-
-Sample test output:
-
-```
-tests/test_pawpal.py::test_task_mark_complete PASSED
-tests/test_pawpal.py::test_pet_add_task_increases_count PASSED
-
-2 passed in 0.02s
 ```
 
-## 📐 Smarter Scheduling
-## 📐 Smarter Scheduling
+Sample output:
 
-| Feature | Method(s) | Notes |
-|---------|-----------|-------|
-| Sorting by time | `Scheduler.sort_tasks_by_time()` | Sorts all tasks across all pets using 24-hour `HH:MM` time strings. |
-| Filtering incomplete tasks | `Scheduler.get_incomplete_tasks()` | Returns only tasks that have not been completed yet. |
-| Filtering by pet | `Scheduler.filter_tasks_by_pet(pet_name)` | Finds a pet by name and returns only that pet's tasks. |
-| Recurring tasks | `Scheduler.complete_task(task)` | Marks a task complete and creates the next daily or weekly task if needed. |
-| Conflict detection | `Scheduler.detect_conflicts()` | Returns warning messages when two or more tasks share the same due date and time. |
+```
+collected 5 items
 
-## 📸 Demo Walkthrough
+tests/test_pawpal.py .....                                               [100%]
 
-Describe your app in numbered steps so a reader can follow along without watching a video:
+============================== 5 passed in 0.04s ===============================
+```
 
-1. <!-- Describe this step -->
-2. <!-- Describe this step -->
-3. <!-- Describe this step -->
-4. <!-- Describe this step -->
-5. <!-- Add more steps as needed -->
-
-**Screenshot or video** *(optional)*: <!-- Insert a screenshot or link to a demo video here -->
+The five tests cover task completion, adding a task to a pet, sorting by time, daily recurring tasks, and conflict detection.
