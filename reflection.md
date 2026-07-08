@@ -23,8 +23,7 @@ At this stage, I have not made any major changes to my initial design. After rev
 **a. Constraints and priorities**
 My scheduler considers task time, priority, and completion status. The main constraint is time because the daily plan should appear in chronological order. Priority is stored so the user can see which tasks matter most, and completion status is used to filter out tasks that are already done.
 **b. Tradeoffs**
-One tradeoff my scheduler makes is keeping the scheduling logic simple by sorting tasks with 24-hour time strings instead of using a more advanced date/time system. This is reasonable because the app is focused on a daily pet care plan, and times like `07:00`, `08:00`, and `17:00` sort correctly and are easy to understand.
-
+One tradeoff my scheduler makes is that conflict detection only checks for exact matches in due date and time. For example, two tasks scheduled at 08:00 on the same date are flagged as a conflict, but tasks at 08:00 and 08:05 are not considered overlapping. This keeps the algorithm simple and readable, but it does not account for task duration or partial overlaps. I decided this was reasonable for the current project because tasks do not yet store detailed start and end times.
 ---
 
 ## 3. AI Collaboration
