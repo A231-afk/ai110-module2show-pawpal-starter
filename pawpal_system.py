@@ -5,6 +5,7 @@ scheduling logic is intentionally left unimplemented for this phase.
 """
 
 from dataclasses import dataclass, field
+from datetime import datetime, timedelta
 
 
 @dataclass
@@ -79,3 +80,63 @@ class Scheduler:
             if pet.name == pet_name:
                 return pet.tasks
         return []
+
+    def complete_task(self, task: Task) -> Task | None:
+        """Complete a task and, if it recurs, schedule the next one on the same pet."""
+        task.mark_complete()
+
+        # A one-time task does not repeat.
+        if task.frequency == "once":
+            return None
+
+        # Figure out how many days until the next occurrence.
+        if task.frequency == "daily":
+            days_ahead = 1
+        elif task.frequency == "weekly":
+            days_ahead = 7
+        else:
+            # Unknown frequency: treat it like a one-time task.
+            return None
+
+        # Calculate the next due date from the current one.
+        current_date = datetime.strptime(task.due_date, "%Y-%m-%d")
+        next_date = current_date + timedelta(days=days_ahead)
+        next_due_date = next_date.strftime("%Y-%m-%d")
+
+        # Build the next task, keeping the same details but not yet completed.
+        new_task = Task(
+            description=task.description,
+            time_of_day=task.time_of_day,
+            priority=task.priority,
+            due_date=next_due_date,
+            completed=False,
+            frequency=task.frequency,
+        )
+
+        # Add the new task to whichever pet owned the original task.
+        for pet in self.owner.pets:
+            if task in pet.tasks:
+                pet.add_task(new_task)
+                break
+
+        return new_task
+
+    def detect_conflicts(self) -> list[str]:
+        """Return a warning for each pair of tasks sharing a due_date and time_of_day."""
+        warnings = []
+        tasks = self.get_all_tasks()
+
+        # Compare each task with every task after it, so each pair is checked once.
+        for i in range(len(tasks)):
+            for j in range(i + 1, len(tasks)):
+                first = tasks[i]
+                second = tasks[j]
+                same_date = first.due_date == second.due_date
+                same_time = first.time_of_day == second.time_of_day
+                if same_date and same_time:
+                    warnings.append(
+                        f"Conflict: '{first.description}' and '{second.description}' "
+                        f"are both scheduled on {first.due_date} at {first.time_of_day}."
+                    )
+
+        return warnings
