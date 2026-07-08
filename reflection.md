@@ -6,13 +6,15 @@ Add care tasks for a pet, like feeding, walking, meds, or grooming.
 Generate a daily schedule that orders tasks by priority and time.
 **a. Initial design**
 
-- Briefly describe your initial UML design.
+- Briefly describe your initial UML design. 
 - What classes did you include, and what responsibilities did you assign to each?
+My initial UML design included four main classes: Owner, Pet, Task, and Scheduler. The Owner class stores the owner's name and manages a list of pets. The Pet class stores identifying information such as the pet's name and species and manages that pet's tasks. The Task class represents an individual pet care activity and stores its description, time of day, priority, and completion status. The Scheduler class acts as the main scheduling component by retrieving tasks across all of the owner's pets, sorting them by time, and filtering out completed tasks. I designed the relationships so that one Owner can have multiple Pets, each Pet can have multiple Tasks, and the Scheduler uses the Owner to access tasks across all pets.
 
 **b. Design changes**
 
 - Did your design change during implementation?
 - If yes, describe at least one change and why you made it.
+At this stage, I have not made any major changes to my initial design. After reviewing the class skeleton, the relationships and responsibilities still appear appropriate for the current project requirements. I may revise the design later during implementation if I discover missing relationships or logic bottlenecks.
 
 ---
 
