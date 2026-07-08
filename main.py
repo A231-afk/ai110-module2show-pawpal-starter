@@ -16,9 +16,9 @@ def main() -> None:
     owner.add_pet(mimi)
 
     # Create tasks across the two pets (24-hour time strings)
-    rex.add_task(Task("Morning walk", "07:00", "high"))
-    rex.add_task(Task("Evening walk", "17:00", "medium"))
-    mimi.add_task(Task("Feed breakfast", "08:00", "high"))
+    rex.add_task(Task("Morning walk", "07:00", "high", due_date="2026-07-08"))
+    rex.add_task(Task("Evening walk", "17:00", "medium", due_date="2026-07-08"))
+    mimi.add_task(Task("Feed breakfast", "08:00", "high", due_date="2026-07-08"))
 
     # Use the scheduler to sort all tasks by time
     scheduler = Scheduler(owner)

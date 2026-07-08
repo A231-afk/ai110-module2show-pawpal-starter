@@ -63,7 +63,7 @@ if st.session_state.owner.pets:
     priority = st.selectbox("Priority", ["low", "medium", "high"], index=2)
 
     if st.button("Add task"):
-        selected_pet.add_task(Task(task_title, time_of_day, priority))
+        selected_pet.add_task(Task(task_title, time_of_day, priority, due_date="2026-07-08"))
         st.success(f"Added task to {selected_pet.name}")
 
     st.write("Current tasks:")

@@ -12,7 +12,9 @@ class Task:
     description: str
     time_of_day: str
     priority: str
+    due_date: str  # YYYY-MM-DD
     completed: bool = False
+    frequency: str = "once"
 
     def mark_complete(self) -> None:
         """Mark this task as completed."""
@@ -70,3 +72,10 @@ class Scheduler:
     def get_incomplete_tasks(self) -> list[Task]:
         """Return all tasks that are not yet completed."""
         return [task for task in self.get_all_tasks() if not task.completed]
+
+    def filter_tasks_by_pet(self, pet_name: str) -> list[Task]:
+        """Return the tasks of the pet matching pet_name, or [] if none matches."""
+        for pet in self.owner.pets:
+            if pet.name == pet_name:
+                return pet.tasks
+        return []
