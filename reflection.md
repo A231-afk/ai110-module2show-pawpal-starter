@@ -1,7 +1,9 @@
 # PawPal+ Project Reflection
 
 ## 1. System Design
-
+Add basic owner and pet information.
+Add care tasks for a pet, like feeding, walking, meds, or grooming.
+Generate a daily schedule that orders tasks by priority and time.
 **a. Initial design**
 
 - Briefly describe your initial UML design.
