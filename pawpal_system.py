@@ -16,7 +16,7 @@ class Task:
 
     def mark_complete(self) -> None:
         """Mark this task as completed."""
-        pass
+        self.completed = True
 
 
 @dataclass
@@ -27,11 +27,11 @@ class Pet:
 
     def add_task(self, task: Task) -> None:
         """Add a task to this pet."""
-        pass
+        self.tasks.append(task)
 
     def show_tasks(self) -> list[Task]:
         """Return the pet's tasks."""
-        pass
+        return self.tasks
 
 
 class Owner:
@@ -41,15 +41,15 @@ class Owner:
 
     def add_pet(self, pet: Pet) -> None:
         """Add a pet to this owner."""
-        pass
+        self.pets.append(pet)
 
     def remove_pet(self, pet: Pet) -> None:
         """Remove a pet from this owner."""
-        pass
+        self.pets.remove(pet)
 
     def list_pets(self) -> list[Pet]:
         """Return the owner's pets."""
-        pass
+        return self.pets
 
 
 class Scheduler:
@@ -58,12 +58,15 @@ class Scheduler:
 
     def get_all_tasks(self) -> list[Task]:
         """Return every task across all of the owner's pets."""
-        pass
+        all_tasks = []
+        for pet in self.owner.pets:
+            all_tasks.extend(pet.tasks)
+        return all_tasks
 
     def sort_tasks_by_time(self) -> list[Task]:
         """Return all tasks sorted by time of day."""
-        pass
+        return sorted(self.get_all_tasks(), key=lambda task: task.time_of_day)
 
     def get_incomplete_tasks(self) -> list[Task]:
         """Return all tasks that are not yet completed."""
-        pass
+        return [task for task in self.get_all_tasks() if not task.completed]
